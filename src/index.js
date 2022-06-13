@@ -5,6 +5,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
 
+const authRoutes = require("./routes/auth");
+const paymentRoutes = require("./routes/payment");
+const userRoutes = require("./routes/user");
 
 const PORT = process.env.PORT || 3000;
 const DB_URI = process.env.DB_URI;
@@ -15,7 +18,9 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.json());
 
 // ROutes
-
+app.use('/api/v1/auth',authRoutes);
+app.use('/api/v1/payments',paymentRoutes);
+app.use('/api/v1/users',userRoutes);
 
 (async()=>{
     try{
@@ -32,6 +37,6 @@ app.listen(PORT,()=>{
 
 app.get('/',(req,res)=>{
     res.send({
-        msg:"Hello world"
+        docs:"https://documenter.getpostman.com/view/4654837/UVR8pThv"
     })
 })
