@@ -21,7 +21,7 @@ const registerUser = async(user)=>{
   }
   let hash;
   try{
-      hash = hashPassword(user);
+      hash = await hashPassword(user);
   }catch(err){
       return err;
   }
