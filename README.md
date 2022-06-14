@@ -48,7 +48,7 @@ npm run test
 
 ### Service Subscription 
 
-<img src="./pic1.png" alt="drawing" width="400"/>
+<img src="./pic1.png" alt="drawing" width="300"/>
 
 Use the following card details:
 ```
@@ -61,7 +61,7 @@ Expiry: 09/32
 OTP: 123456
 
 ```
-<img src="./pic2.png" alt="drawing" width="400"/>
+<img src="./pic2.png" alt="drawing" width="300"/>
 
 ### Payment confirmation
 
