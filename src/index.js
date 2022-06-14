@@ -34,9 +34,3 @@ app.use('/api/v1/users',userRoutes);
 app.listen(PORT,()=>{
     console.log(`Listening for requests on port ${PORT}`);
 })
-
-app.get('/',(req,res)=>{
-    res.send({
-        docs:"https://documenter.getpostman.com/view/4654837/UVR8pThv"
-    })
-})
