@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
-const  User = require("../models/user");
+const User = require("../models/user");
+const {hashPassword} = require("../services/auth");
 
 const SALT_ROUNDS = Number(process.env.SALT_ROUNDS);
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -10,7 +11,7 @@ const JWT_EXPIRY = process.env.JWT_EXPIRY;
 
 router.post('/register',async(req,res)=>{
     let user = req.body;
-    let salt,hash,exists;
+    let exists;
 
     try{
         exists = await User.findOne({email:user.email});
@@ -28,25 +29,15 @@ router.post('/register',async(req,res)=>{
         });
         return;
     }
-
+    let hash;
     try{
-        salt = await bcrypt.genSalt(SALT_ROUNDS);
+        hash = hashPassword(user);
     }catch(err){
-        console.error(err);
+        console.log(err);
         res.status(500).send({
             err:err.toString()
         })
-        return;
-    }
-
-    try{
-        hash = await bcrypt.hash(user.password,salt);
-    }catch(err){
-        console.error(err);
-        res.status(500).send({
-            err:err.toString()
-        })
-        return;
+        return
     }
 
     try{
