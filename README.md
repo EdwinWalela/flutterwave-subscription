@@ -25,12 +25,13 @@ FW_SECRET_KEY=
 FW_PREMIUM_LINK=
 ```
 
-3. Create a merchant account on [Flutterwave] and copy public key and secret key to the `.env` file(https://dashboard.flutterwave.com/signup)
-
+3. Create a merchant account on [Flutterwave](https://dashboard.flutterwave.com/signup) and copy public key and secret key to the `.env` file
 
 4. Create a payment link from the Flutterwave dashboard and copy the link to the `.env` file
 
-Start NodeJS Server
+5. Create a local tunnel URL using Ngrok and add the url as a webhook on the Flutterwave dashboard
+
+6. Start NodeJS Server
 
 ```
 npm start
@@ -45,7 +46,7 @@ npm run test
 
 [API Documentation](https://documenter.getpostman.com/view/4654837/UzBgvVVv)
 
-## Service Subscription 
+### Service Subscription 
 
 <img src="./pic1.png" alt="drawing" width="400"/>
 
@@ -62,10 +63,15 @@ OTP: 123456
 ```
 <img src="./pic2.png" alt="drawing" width="400"/>
 
-## Payment confirmation
+### Payment confirmation
 
 <img src="./pic3.png" alt="drawing" width="400"/>
 
-## Flutterwave Admin dashboard
+### Flutterwave Admin dashboard
 
 <img src="./pic4.png" alt="drawing" width="700"/>
+
+
+## Reference
+
+[Flutterwave Documentation](https://developer.flutterwave.com/)
