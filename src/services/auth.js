@@ -1,3 +1,4 @@
+require("dotenv").config();
 const router = require("express").Router();
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
@@ -60,7 +61,6 @@ const login = async (body)=>{
 const generateToken = async(user,userRequest)=>{
   let isAuth = await bcrypt.compare(userRequest.password,user.password);
   let jwtPayload;
-
   if(isAuth){
     jwtPayload = {
       id:user._id,
@@ -89,5 +89,6 @@ const hashPassword = async (user)=>{
 module.exports = {
   hashPassword,
   registerUser,
-  login
+  login,
+  generateToken,
 }

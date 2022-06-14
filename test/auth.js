@@ -1,5 +1,5 @@
 const assert = require('assert');
-const {hashPassword} = require("../src/services/auth");
+const {hashPassword,generateToken} = require("../src/services/auth");
 
 describe("Authentication",()=>{
 
@@ -11,12 +11,20 @@ describe("Authentication",()=>{
     assert.notEqual(input.password,hash)
   })
 
-  it("should generate token",()=>{
+  it("should generate token",async()=>{
+    let storedUser = {
+      password:"MyStr0nGpAssW()rD!"
+    }
+    let userRequest = {
+      password:"MyStr0nGpAssW()rD!"
+    }
+    storedUser.password = await hashPassword(storedUser);
+    let token = await generateToken(storedUser,userRequest);
+    
+    assert.notEqual(true,token instanceof Error)
+
     
   })
 
-  it("should be valid",()=>{
-
-  })
 })
 
