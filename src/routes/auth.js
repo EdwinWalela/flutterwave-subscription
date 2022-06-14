@@ -2,7 +2,7 @@ const router = require("express").Router();
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
-const {registerUser} = require("../services/auth");
+const {registerUser,login} = require("../services/auth");
 
 const SALT_ROUNDS = Number(process.env.SALT_ROUNDS);
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -37,52 +37,20 @@ router.post('/register',async(req,res)=>{
 })
 
 router.post('/login',async(req,res)=>{
-    let userRequest = req.body;
-    let user;
+	let body = req.body;
+	let token = await login(body);
 
-    try{
-        user = await User.findOne({email:userRequest.email});
-    }
-    catch(err){
-        console.error(err);
-        res.status(500).send({
-            err:err.toString()
-        })
-    }
+	if(token instanceof Error){
+		let err = token.message;
+		res.status(500).send({
+			err
+		})
+		return
+	}
 
-    if(!user){
-        res.status(401).send({
-            msg:"email not registered"
-        })
-        return;
-    }
-
-    let isAuth = await bcrypt.compare(userRequest.password,user.password);
-    let jwtPayload;
-
-    if(isAuth){
-        jwtPayload = {
-            id:user._id,
-            name:user.name,
-            email:user.email,
-            isPremium:user.isPremium
-        }
-        let token = jwt.sign(
-            {user:jwtPayload},
-            JWT_SECRET,
-            {expiresIn:`${JWT_EXPIRY}h`}
-        )
-
-        res.send({
-            token
-        });
-        return;
-    }else{
-        res.status(401).send({
-            msg:"Incorrect combination"
-        })
-        return;
-    }
+	res.send({
+		token
+	})
 })
 
 module.exports = router;
