@@ -16,4 +16,38 @@ const hashPassword = async (user)=>{
   return hash;
 }
 
-module.exports = {hashPassword}
+const registerUser = async (user)=>{
+  try{
+    exists = await User.findOne({email:user.email});
+  }catch(err){
+      console.error(err);
+      return err
+  }
+
+  if(exists){
+    return new Error("User exists");
+  }
+  let hash;
+  try{
+      hash = hashPassword(user);
+  }catch(err){
+      return err;
+  }
+  let newUser;
+  try{
+    newUser = await new User({
+          email:user.email,
+          name:user.name,
+          password:hash,
+          isPremium:false,
+      }).save();
+  }catch(err){
+      return err;
+  }
+  return newUser;
+}
+
+module.exports = {
+  hashPassword,
+  registerUser
+}

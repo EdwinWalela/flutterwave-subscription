@@ -2,7 +2,7 @@ const router = require("express").Router();
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
-const {hashPassword} = require("../services/auth");
+const {registerUser} = require("../services/auth");
 
 const SALT_ROUNDS = Number(process.env.SALT_ROUNDS);
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -11,48 +11,24 @@ const JWT_EXPIRY = process.env.JWT_EXPIRY;
 
 router.post('/register',async(req,res)=>{
     let user = req.body;
-    let exists;
+    let newUser = await registerUser(user);
 
-    try{
-        exists = await User.findOne({email:user.email});
-    }catch(err){
-        console.error(err);
-        res.status(500).send({
-            err:err.toString()
-        })
-        return
-    }
+    if (newUser instanceof Error){
+        let errMsg = newUser.message;
 
-    if(exists){
-        res.status(401).send({
-            msg:"Email is already registered"
-        });
-        return;
-    }
-    let hash;
-    try{
-        hash = hashPassword(user);
-    }catch(err){
-        console.log(err);
-        res.status(500).send({
-            err:err.toString()
-        })
-        return
-    }
-
-    try{
-        await new User({
-            email:user.email,
-            name:user.name,
-            password:hash,
-            isPremium:false,
-        }).save();
-    }catch(err){
-        console.error(err);
-        res.status(500).send({
-            err:err.toString()
-        });
-        return;
+        switch (errMsg) {
+					case errMsg.includes("exists"):
+						res.status(403).send({
+							err:errMsg
+						})
+						break;
+					default:
+						res.status(500).send({
+							err:errMsg
+						})
+						break;
+        }
+				return;
     }
 
     res.status(201).send({
