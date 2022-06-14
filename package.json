@@ -15,6 +15,7 @@
     "express": "^4.17.1",
     "flutterwave-node-v3": "^1.0.9",
     "jsonwebtoken": "^8.5.1",
+    "mocha": "^10.0.0",
     "mongoose": "^6.1.2"
   }
 }

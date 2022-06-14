@@ -5,10 +5,11 @@ const EXPIRY = process.env.JWT_EXPIRY;
 const verifyToken = async(req,res,next)=>{
     const bearerToken = req.headers.authorization;
     
-    if(typeof bearerHeader !== undefined){
+    if(typeof bearerToken !== 'undefined'){
+        let token = bearerToken.split(" ")[1];
         let decoded;
         try{
-            decoded = jwt.verify(bearerToken,SECRET);
+            decoded = jwt.verify(token,SECRET);
         }catch(err){
             console.error(err);
             res.status(401).send({

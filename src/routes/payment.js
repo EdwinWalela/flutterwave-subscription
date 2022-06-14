@@ -1,16 +1,10 @@
 const router = require("express").Router();
 const tokenVerification = require("../middleware/tokenVerification");
-
 const User= require('../models/user');
-const Flutterwave = require('flutterwave-node-v3');
-
-const FW_PUBKEY = process.env.FW_PUBKEY;
-const FW_SECRET_KEY = process.env.FW_SECRET_KEY;
 const FW_PREMIUM_LINK = process.env.FW_PREMIUM_LINK
 
 // subscribe to plan
 router.get('/subscribe',tokenVerification,async(req,res)=>{
-    let user = req.user;
     res.send({
         redirect:FW_PREMIUM_LINK
     })
@@ -48,7 +42,6 @@ router.get('/verify',tokenVerification,async(req,res)=>{
 router.post('/callback',async(req,res)=>{
     let response = req.body;
     let email =  response.customer.email;
-    console.log(response)
     if(response.status=='successful'){
         try{
         await User.findOneAndUpdate({email:email},{
