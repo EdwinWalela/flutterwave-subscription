@@ -65,7 +65,7 @@ OTP: 123456
 
 ### Payment confirmation
 
-<img src="./pic3.png" alt="drawing" width="400"/>
+<img src="./pic3.png" alt="drawing" width="300"/>
 
 ### Flutterwave Admin dashboard
 
